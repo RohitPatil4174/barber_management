@@ -18,7 +18,7 @@ const LandingPage = () => {
   const { shopSettings } = useStore();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/services')
+    fetch('https://barber-management-backend.onrender.com/api/services')
       .then(res => res.json())
       .then(data => setServices(data))
       .catch(err => console.error(err));
@@ -35,7 +35,7 @@ const LandingPage = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/queue/join', {
+      const response = await fetch('https://barber-management-backend.onrender.com/api/queue/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ customerName: name, serviceId: selectedService }),

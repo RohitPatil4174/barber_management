@@ -16,7 +16,7 @@ import Analytics from './pages/admin/Analytics';
 import Settings from './pages/admin/Settings';
 import AdminLayout from './components/layout/AdminLayout';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://barber-management-backend.onrender.com';
 
 export const socket = io(API_URL);
 

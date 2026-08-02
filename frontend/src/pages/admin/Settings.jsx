@@ -31,7 +31,7 @@ const Settings = () => {
 
   const fetchServices = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/services');
+      const res = await fetch('https://barber-management-backend.onrender.com/api/services');
       const data = await res.json();
       setServices(data);
     } catch (err) { console.error(err); }
@@ -41,7 +41,7 @@ const Settings = () => {
     e.preventDefault();
     setSavingSettings(true);
     try {
-      const res = await fetch('http://localhost:5000/api/settings', {
+      const res = await fetch('https://barber-management-backend.onrender.com/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ shopName, currency })
@@ -56,7 +56,7 @@ const Settings = () => {
     e.preventDefault();
     setAddingService(true);
     try {
-      await fetch('http://localhost:5000/api/services', {
+      await fetch('https://barber-management-backend.onrender.com/api/services', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ name: newServiceName, price: newServicePrice, duration: newServiceDuration })
@@ -72,7 +72,7 @@ const Settings = () => {
   const handleDeleteService = async (id) => {
     if (!window.confirm('Are you sure you want to delete this service?')) return;
     try {
-      await fetch(`http://localhost:5000/api/services/${id}`, {
+      await fetch(`https://barber-management-backend.onrender.com/api/services/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${user.token}` }
       });

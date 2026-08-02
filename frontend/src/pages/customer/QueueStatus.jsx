@@ -14,7 +14,7 @@ const QueueStatus = () => {
 
   const fetchQueue = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/queue');
+      const res = await fetch('https://barber-management-backend.onrender.com/api/queue');
       const data = await res.json();
       setQueue(data);
     } catch (err) {

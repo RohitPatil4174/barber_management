@@ -8,7 +8,7 @@ const Analytics = () => {
   const { user, shopSettings } = useStore();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/transactions/analytics', {
+    fetch('https://barber-management-backend.onrender.com/api/transactions/analytics', {
       headers: { Authorization: `Bearer ${user?.token}` }
     })
       .then(res => res.json())

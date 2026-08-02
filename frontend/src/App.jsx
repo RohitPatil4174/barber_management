@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import useStore from './store/useStore';
 
-// We will create these pages next
+// Customer Pages
 import LandingPage from './pages/customer/LandingPage';
 import QueueStatus from './pages/customer/QueueStatus';
+
+// Admin Pages
 import Login from './pages/admin/Login';
 import Signup from './pages/admin/Signup';
 import Dashboard from './pages/admin/Dashboard';
@@ -14,14 +16,54 @@ import Analytics from './pages/admin/Analytics';
 import Settings from './pages/admin/Settings';
 import AdminLayout from './components/layout/AdminLayout';
 
-export const socket = io('http://localhost:5000');
+const API_URL = 'http://localhost:5000';
+
+export const socket = io(API_URL);
+
+// ======================
+// Role Selection Page
+// ======================
+function RoleSelection() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100">
+      <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md">
+
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-blue-700">
+            ✂️ TrimFlow
+          </h1>
+
+          <p className="text-gray-500 mt-3">
+            Barber Queue Management System
+          </p>
+        </div>
+
+        <button
+          onClick={() => navigate('/customer')}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl text-lg font-semibold transition duration-300 mb-5"
+        >
+          👤 Continue as Customer
+        </button>
+
+        <button
+          onClick={() => navigate('/admin/login')}
+          className="w-full bg-gray-900 hover:bg-black text-white py-4 rounded-xl text-lg font-semibold transition duration-300"
+        >
+          🔐 Continue as Admin
+        </button>
+
+      </div>
+    </div>
+  );
+}
 
 function App() {
   const { user, setShopSettings } = useStore();
 
   useEffect(() => {
-    // Fetch settings on load
-    fetch('http://localhost:5000/api/settings')
+    fetch(`${API_URL}/api/settings`)
       .then((res) => res.json())
       .then((data) => setShopSettings(data))
       .catch((err) => console.error(err));
@@ -30,20 +72,40 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-text">
       <Routes>
-        {/* Customer Routes */}
-        <Route path="/" element={<LandingPage />} />
+
+        {/* Home */}
+        <Route path="/" element={<RoleSelection />} />
+
+        {/* Customer */}
+        <Route path="/customer" element={<LandingPage />} />
         <Route path="/queue" element={<QueueStatus />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={!user ? <Login /> : <Navigate to="/admin/dashboard" />} />
-        <Route path="/admin/signup" element={!user ? <Signup /> : <Navigate to="/admin/dashboard" />} />
-        
-        <Route path="/admin" element={user ? <AdminLayout /> : <Navigate to="/admin/login" />}>
+        {/* Admin Login */}
+        <Route
+          path="/admin/login"
+          element={!user ? <Login /> : <Navigate to="/admin/dashboard" />}
+        />
+
+        {/* Admin Signup */}
+        <Route
+          path="/admin/signup"
+          element={!user ? <Signup /> : <Navigate to="/admin/dashboard" />}
+        />
+
+        {/* Admin Dashboard */}
+        <Route
+          path="/admin"
+          element={user ? <AdminLayout /> : <Navigate to="/admin/login" />}
+        >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+
+        {/* Unknown Route */}
+        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </div>
   );

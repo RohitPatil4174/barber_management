@@ -46,11 +46,11 @@ const Dashboard = () => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
       
-      const statsRes = await fetch('http://localhost:5000/api/transactions/stats', { headers });
+      const statsRes = await fetch('https://barber-management-backend.onrender.com/api/transactions/stats', { headers });
       const statsData = await statsRes.json();
       setStats(statsData);
 
-      const queueRes = await fetch('http://localhost:5000/api/queue');
+      const queueRes = await fetch('https://barber-management-backend.onrender.com/api/queue');
       const queueData = await queueRes.json();
       setQueue(queueData);
     } catch (err) {
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:5000/api/queue/${id}/status`, {
+      await fetch(`https://barber-management-backend.onrender.com/api/queue/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status })
@@ -81,7 +81,7 @@ const Dashboard = () => {
 
   const handleCompleteService = async (id, amountCharged) => {
     try {
-      await fetch(`http://localhost:5000/api/transactions/complete/${id}`, {
+      await fetch(`https://barber-management-backend.onrender.com/api/transactions/complete/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ amountCharged })
@@ -92,7 +92,7 @@ const Dashboard = () => {
   const handleCancelService = async () => {
     if (!selectedQueueId) return;
     try {
-      await fetch(`http://localhost:5000/api/transactions/cancel/${selectedQueueId}`, {
+      await fetch(`https://barber-management-backend.onrender.com/api/transactions/cancel/${selectedQueueId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ cancelReason })
